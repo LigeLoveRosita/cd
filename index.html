@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>桃子专属小彩蛋</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--color-bg:#0a0a0a;
+--color-surface:rgba(255,255,255,0.04);
+--color-surface-hover:rgba(255,255,255,0.08);
+--color-border:rgba(255,255,255,0.08);
+--color-border-hover:rgba(255,255,255,0.18);
+--color-text:#fff;
+--color-text-secondary:rgba(255,255,255,0.55);
+--color-text-muted:rgba(255,255,255,0.48);
+--color-accent:#fff;
+--font-main:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+--radius:12px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+font-family:var(--font-main);
+font-weight:400;line-height:1.5;
+color:var(--color-text);
+background:var(--color-bg);
+min-height:100vh;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+}
+.background-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background-image:url('main.jpg');
+background-size:cover;background-position:center;background-repeat:no-repeat;
+filter:blur(24px) brightness(0.75);
+opacity:0;z-index:-1;transition:opacity 1.2s ease;
+}
+.background-overlay.loaded{opacity:0.55}
+.container{
+max-width:1100px;margin:0 auto;padding:48px 32px 32px;min-height:100vh;
+display:flex;flex-direction:column;
+}
+.header{
+display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+padding-bottom:36px;border-bottom:1px solid var(--color-border);
+flex-wrap:wrap;
+}
+.logo{display:flex;align-items:baseline;gap:14px}
+.logo h1{font-size:30px;font-weight:700;letter-spacing:0.06em;color:var(--color-text)}
+.logo-sub{font-size:13px;font-weight:300;letter-spacing:0.3em;color:var(--color-text-secondary);text-transform:uppercase}
+.logo-icon{width:28px;height:28px;opacity:0.85}
+
+.main-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 0}
+.error-wrap{text-align:center;max-width:520px}
+.error-code{font-size:52px;font-weight:700;line-height:1.2;letter-spacing:0.08em;color:var(--color-text);opacity:0.85;margin-bottom:16px}
+.error-message{font-size:15px;font-weight:400;color:var(--color-text-secondary);margin-bottom:36px;letter-spacing:0.04em}
+
+.home-btn{
+display:inline-flex;align-items:center;gap:10px;
+padding:13px 32px;
+background:var(--color-surface);
+border:1px solid var(--color-border);
+border-radius:var(--radius);
+color:var(--color-text);
+font-family:var(--font-main);font-size:13px;font-weight:500;letter-spacing:0.06em;
+text-decoration:none;cursor:pointer;
+transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.home-btn:hover{
+border-color:var(--color-border-hover);
+background:var(--color-surface-hover);
+transform:translateY(-2px);
+box-shadow:0 8px 24px rgba(0,0,0,0.3);
+}
+.home-btn i{font-size:14px}
+
+.footer{padding:48px 0 32px;border-top:1px solid var(--color-border);text-align:center}
+.footer-content{display:flex;flex-direction:column;align-items:center;gap:12px}
+.footer .copyright{font-size:11px;font-weight:400;letter-spacing:0.1em;color:var(--color-text-muted)}
+.footer-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.footer-links a{color:var(--color-text-secondary);text-decoration:none;transition:color 0.3s ease;font-size:11px;font-weight:500;letter-spacing:0.1em}
+.footer-links a:hover{color:var(--color-text)}
+.separator{font-size:10px;color:var(--color-text-muted);opacity:0.4}
+.beian{font-size:10px;letter-spacing:0.05em;color:var(--color-text-muted)}
+.beian a{color:var(--color-text-muted);text-decoration:none;transition:color 0.3s ease}
+.beian a:hover{color:var(--color-text)}
+
+@media(max-width:768px){
+.container{padding:36px 20px 24px}
+.header{gap:16px}
+.error-code{font-size:36px}
+}
+</style>
+</head>
+<body>
+<div class="background-overlay" id="bgOverlay"></div>
+<div class="container">
+<header class="header">
+<a href="index.html" class="logo" style="text-decoration:none;color:inherit">
+<img src="favicon.ico" class="logo-icon" alt="彩蛋">
+<h1>李子</h1>
+<span class="logo-sub">给桃子的小惊喜</span>
+</a>
+<div style="width:260px"></div>
+</header>
+
+<main class="main-content">
+<div class="error-wrap">
+<div class="error-code" id="errorCode">给桃子做的彩蛋页面</div>
+<div class="error-message">祝桃子考试顺利，顺顺利利回来打电话呐</div>
+</div>
+</main>
+
+<footer class="footer">
+<div class="footer-content">
+<p class="copyright">特别制作这个小彩蛋</p>
+<div class="footer-links">
+
+</div>
+</div>
+</footer>
+</div>
+
+<script>
+(function(){
+const bgOverlay=document.getElementById('bgOverlay');
+const img=new Image();
+img.src='main.jpg';
+img.onload=()=>{gsap.to(bgOverlay,{opacity:1,duration:1.2,ease:'power2.out'});bgOverlay.classList.add('loaded')};
+img.onerror=()=>{bgOverlay.classList.add('loaded')};
+
+gsap.fromTo('.header',{opacity:0,y:-30},{opacity:1,y:0,duration:0.8,ease:'power3.out'});
+gsap.fromTo('.error-code',{opacity:0,y:40,scale:0.8},{opacity:1,y:0,scale:1,duration:0.8,ease:'back.out(1.7)',delay:0.3});
+gsap.fromTo('.error-message',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power2.out',delay:0.8});
+gsap.fromTo('.footer',{opacity:0,y:20},{opacity:1,y:0,duration:0.6,ease:'power2.out',delay:1.2});
+
+const errorCode=document.querySelector('.error-code');
+errorCode.addEventListener('mouseenter',function(){
+gsap.to(this,{scale:1.05,opacity:0.8,duration:0.3,ease:'power2.out'});
+});
+errorCode.addEventListener('mouseleave',function(){
+gsap.to(this,{scale:1,opacity:1,duration:0.3,ease:'power2.out'});
+});
+})();
+</script>
+
+<audio id="bgMusic" src="taozi.mp3" loop></audio>
+
+<script>
+const audio = document.getElementById('bgMusic');
+
+// 尝试自动播放
+const playAudio = () => {
+  audio.play().catch(() => {
+    // 自动播放被阻止，点击页面任意位置后播放
+    document.addEventListener('click', () => {
+      audio.play();
+    }, { once: true });
+  });
+  document.removeEventListener('click', playAudio);
+};
+document.addEventListener('click', playAudio, { once: true });
+</script>
+
+</body>
+</html>
