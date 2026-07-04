@@ -39,16 +39,16 @@ min-height:100vh;
 position:fixed;top:0;left:0;width:100%;height:100%;
 background-image:url('main.jpg');
 background-size:cover;background-position:center;background-repeat:no-repeat;
-filter:blur(24px) brightness(0.75);
+filter:blur(16px) brightness(0.9);
 opacity:0;z-index:-1;transition:opacity 1.2s ease;
 }
-.background-overlay.loaded{opacity:0.55}
+.background-overlay.loaded{opacity:1.0}
 .container{
 max-width:1100px;margin:0 auto;padding:48px 32px 32px;min-height:100vh;
 display:flex;flex-direction:column;
 }
 .header{
-display:flex;align-items:baseline;justify-content:space-between;gap:24px;
+display:flex;align-items:baseline;justify-content:space-between;gap:20px;
 padding-bottom:36px;border-bottom:1px solid var(--color-border);
 flex-wrap:wrap;
 }
@@ -61,6 +61,10 @@ flex-wrap:wrap;
 .error-wrap{text-align:center;max-width:520px}
 .error-code{font-size:52px;font-weight:700;line-height:1.2;letter-spacing:0.08em;color:var(--color-text);opacity:0.85;margin-bottom:16px}
 .error-message{font-size:15px;font-weight:400;color:var(--color-text-secondary);margin-bottom:36px;letter-spacing:0.04em}
+
+.now-playing{margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--color-text-secondary);letter-spacing:0.04em}
+.now-playing i{font-size:11px;animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{opacity:0.5}50%{opacity:1}}
 
 .home-btn{
 display:inline-flex;align-items:center;gap:10px;
@@ -114,12 +118,16 @@ box-shadow:0 8px 24px rgba(0,0,0,0.3);
 <main class="main-content">
 <div class="error-wrap">
 <div class="error-code" id="errorCode">给桃子做的彩蛋页面</div>
-<div class="error-message">祝桃子考试顺利！</div>
+<div class="error-message">桃子呐</div>
 </div>
 </main>
 
 <footer class="footer">
 <div class="footer-content">
+<div class="now-playing" id="nowPlaying">
+<i class="fa-solid fa-music"></i>
+<span id="songName">未播放</span>
+</div>
 <p class="copyright">特别制作这个小彩蛋</p>
 <div class="footer-links">
 
@@ -151,17 +159,24 @@ gsap.to(this,{scale:1,opacity:1,duration:0.3,ease:'power2.out'});
 })();
 </script>
 
-<audio id="bgMusic" src="taozi.mp3" loop></audio>
+<audio id="bgMusic" src="LonelyGirl.mp3" loop></audio>
 
 <script>
 const audio = document.getElementById('bgMusic');
+const songNameEl = document.getElementById('songName');
+
+// 从文件名提取歌名
+const songName = audio.src.split('/').pop().replace(/\.\w+$/, '') || '未知歌曲';
 
 // 尝试自动播放
 const playAudio = () => {
-  audio.play().catch(() => {
+  audio.play().then(() => {
+    songNameEl.textContent = songName;
+  }).catch(() => {
     // 自动播放被阻止，点击页面任意位置后播放
     document.addEventListener('click', () => {
       audio.play();
+      songNameEl.textContent = songName;
     }, { once: true });
   });
   document.removeEventListener('click', playAudio);
