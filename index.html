@@ -164,8 +164,9 @@ gsap.to(this,{scale:1,opacity:1,duration:0.3,ease:'power2.out'});
 const audio = document.getElementById('bgMusic');
 const songNameEl = document.getElementById('songName');
 
-// 从文件名提取歌名
-const songName = audio.src.split('/').pop().replace(/\.\w+$/, '') || '未知歌曲';
+// 从文件名提取歌名 — 把 "桃子最爱的歌-LonelyGirl" 显示为 "桃子最爱的歌 - Lonely Girl"
+const rawName = audio.src.split('/').pop().replace(/\.\w+$/, '') || '未知歌曲';
+const songName = rawName.replace(/-/g, ' · ').replace(/([a-z])([A-Z])/g, '$1 $2');
 
 // 尝试自动播放
 const playAudio = () => {
