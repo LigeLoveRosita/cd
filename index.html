@@ -126,9 +126,9 @@ box-shadow:0 8px 24px rgba(0,0,0,0.3);
 <div class="footer-content">
 <div class="now-playing" id="nowPlaying">
 <i class="fa-solid fa-music"></i>
-<span id="songName">未播放音乐</span>
+<span id="songName">未播放</span>
 </div>
-<p class="copyright">特别制作这个小彩蛋</p>  
+<p class="copyright">特别制作这个小彩蛋</p>
 
 </div>
 </div>
@@ -148,6 +148,11 @@ gsap.fromTo('.error-code',{opacity:0,y:40,scale:0.8},{opacity:1,y:0,scale:1,dura
 gsap.fromTo('.error-message',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power2.out',delay:0.8});
 gsap.fromTo('.footer',{opacity:0,y:20},{opacity:1,y:0,duration:0.6,ease:'power2.out',delay:1.2});
 
+console.log(
+  '%c🍑 嘿桃子！被你发现啦~\n  这个彩蛋是专门为你准备的 ✨\n  好好享受吧 ❤️',
+  'font-size:16px; color:#000; background:#fff; padding:12px 20px; border-radius:8px;'
+);
+
 const errorCode=document.querySelector('.error-code');
 errorCode.addEventListener('mouseenter',function(){
 gsap.to(this,{scale:1.05,opacity:0.8,duration:0.3,ease:'power2.out'});
@@ -158,7 +163,7 @@ gsap.to(this,{scale:1,opacity:1,duration:0.3,ease:'power2.out'});
 })();
 </script>
 
-<audio id="bgMusic" src="LonelyGirl.mp3" loop></audio>  
+<audio id="bgMusic" src="桃子最爱的歌-LonelyGirl.mp3" loop></audio>
 
 <script>
 const audio = document.getElementById('bgMusic');
