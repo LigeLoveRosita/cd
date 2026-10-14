@@ -81,6 +81,9 @@ box-shadow:0 8px 24px rgba(0,0,0,0.3);
 .footer{padding:48px 0 32px;border-top:1px solid var(--color-border);text-align:center}
 .footer-content{display:flex;flex-direction:column;align-items:center;gap:12px}
 .footer .copyright{font-size:11px;font-weight:400;letter-spacing:0.1em;color:var(--color-text-muted)}
+.now-playing{margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--color-text-secondary);letter-spacing:0.04em}
+.now-playing i{font-size:11px;animation:musicPulse 1.5s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{opacity:0.5}50%{opacity:1}}
 @media(max-width:768px){
 .container{padding:36px 20px 24px}
 .header{gap:16px}
@@ -120,6 +123,10 @@ box-shadow:0 8px 24px rgba(0,0,0,0.3);
 
 <footer class="footer">
 <div class="footer-content">
+<div class="now-playing" id="nowPlaying">
+<i class="fa-solid fa-music"></i>
+<span id="songName">未播放</span>
+</div>
 <p class="copyright">特别制作这个小彩蛋</p>
 </div>
 </footer>
@@ -136,6 +143,25 @@ gsap.fromTo('.error-code',{opacity:0,y:40,scale:0.8},{opacity:1,y:0,scale:1,dura
 gsap.fromTo('.error-message',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power2.out',delay:0.8});
 gsap.fromTo('.home-btn',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power2.out',delay:1.2});
 gsap.fromTo('.footer',{opacity:0,y:20},{opacity:1,y:0,duration:0.6,ease:'power2.out',delay:1.4});
+</script>
+
+<audio id="bgMusic" src="LonelyGirl.mp3" loop></audio>
+<script>
+const audio = document.getElementById('bgMusic');
+const songNameEl = document.getElementById('songName');
+const rawName = audio.src.split('/').pop().replace(/\.\w+$/, '') || '未知歌曲';
+const songName = rawName.replace(/([a-z])([A-Z])/g, '$1 $2');
+
+// 点击页面后播放，播放成功时显示歌曲名称。
+const playAudio = () => {
+  audio.play().then(() => {
+    songNameEl.textContent = songName;
+    document.removeEventListener('click', playAudio);
+  }).catch(() => {
+    songNameEl.textContent = '点击页面重试播放';
+  });
+};
+document.addEventListener('click', playAudio);
 </script>
 </body>
 </html>
