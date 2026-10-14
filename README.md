@@ -58,7 +58,7 @@ cd-main/
 
 如果项目已配置 GitHub Pages，可以在这里填写网站地址：
 
-**在线地址：** 待补充
+**在线地址：** https://lizihetz.lizi.click/
 
 ## 📦 版本发布
 
