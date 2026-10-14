@@ -145,23 +145,22 @@ gsap.fromTo('.home-btn',{opacity:0,y:20},{opacity:1,y:0,duration:0.5,ease:'power
 gsap.fromTo('.footer',{opacity:0,y:20},{opacity:1,y:0,duration:0.6,ease:'power2.out',delay:1.4});
 </script>
 
-<audio id="bgMusic" src="LonelyGirl.mp3" loop></audio>
+<audio id="bgMusic" src="LonelyGirl.mp3" autoplay loop preload="auto"></audio>
 <script>
 const audio = document.getElementById('bgMusic');
 const songNameEl = document.getElementById('songName');
 const rawName = audio.src.split('/').pop().replace(/\.\w+$/, '') || '未知歌曲';
 const songName = rawName.replace(/([a-z])([A-Z])/g, '$1 $2');
 
-// 点击页面后播放，播放成功时显示歌曲名称。
-const playAudio = () => {
-  audio.play().then(() => {
-    songNameEl.textContent = songName;
-    document.removeEventListener('click', playAudio);
-  }).catch(() => {
-    songNameEl.textContent = '点击页面重试播放';
-  });
-};
-document.addEventListener('click', playAudio);
+// 页面打开后立即尝试播放，实际播放时显示歌曲名称。
+audio.addEventListener('playing', () => {
+  songNameEl.textContent = songName;
+});
+audio.play().catch((error) => {
+  songNameEl.textContent = error.name === 'NotAllowedError'
+    ? '浏览器已阻止自动播放，请允许此网站自动播放声音'
+    : '音乐加载失败';
+});
 </script>
 </body>
 </html>
