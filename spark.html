@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 火花页面 - 给桃子的彩蛋</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--color-bg:#0a0a0a;
+--color-surface:rgba(255,255,255,0.04);
+--color-surface-hover:rgba(255,255,255,0.08);
+--color-border:rgba(255,255,255,0.08);
+--color-border-hover:rgba(255,255,255,0.18);
+--color-text:#fff;
+--color-text-secondary:rgba(255,255,255,0.55);
+--color-text-muted:rgba(255,255,255,0.48);
+--color-accent:#fff;
+--font-main:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+--radius:12px;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{
+font-family:var(--font-main);
+font-weight:400;line-height:1.5;
+color:var(--color-text);
+background:var(--color-bg);
+min-height:100vh;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+}
+.background-overlay{
+position:fixed;top:0;left:0;width:100%;height:100%;
+background-image:url('main.jpg');
+background-size:cover;background-position:center;background-repeat:no-repeat;
+filter:blur(16px) brightness(0.6);
+opacity:0;z-index:-1;transition:opacity 1.2s ease;
+}
+.background-overlay.loaded{opacity:1.0}
+.container{
+max-width:1100px;margin:0 auto;padding:48px 32px 32px;min-height:100vh;
+display:flex;flex-direction:column;
+}
+.header{
+display:flex;align-items:baseline;justify-content:space-between;gap:20px;
+padding-bottom:36px;border-bottom:1px solid var(--color-border);
+flex-wrap:wrap;
+}
+.logo{display:flex;align-items:baseline;gap:14px;text-decoration:none;color:inherit}
+.logo h1{font-size:30px;font-weight:700;letter-spacing:0.06em;color:var(--color-text)}
+.logo-sub{font-size:13px;font-weight:300;letter-spacing:0.3em;color:var(--color-text-secondary);text-transform:uppercase}
+.logo-icon{width:28px;height:28px;opacity:0.85}
+.main-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 0}
+.spark-wrap{text-align:center;max-width:520px;width:100%}
+.spark-title{font-size:52px;font-weight:700;line-height:1.2;letter-spacing:0.08em;color:var(--color-text);opacity:0.85;margin-bottom:12px}
+.spark-sub{font-size:15px;font-weight:400;color:var(--color-text-secondary);margin-bottom:36px;letter-spacing:0.04em}
+.spark-count-wrap{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.spark-card{
+background:var(--color-surface);
+border:1px solid var(--color-border);
+border-radius:var(--radius);
+padding:24px 32px;text-align:center;
+min-width:140px;flex:1;
+}
+.spark-card .number{font-size:40px;font-weight:700;color:var(--color-text);opacity:0.85;line-height:1.2}
+.spark-card .label{font-size:11px;color:var(--color-text-secondary);letter-spacing:0.08em;margin-top:4px}
+.spark-streak{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:32px;flex-wrap:wrap}
+.streak-day{
+width:36px;height:36px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:12px;font-weight:500;
+background:var(--color-surface);
+border:1px solid var(--color-border);
+color:var(--color-text-secondary);
+}
+.streak-day.active{
+background:var(--color-surface-hover);
+border-color:var(--color-border-hover);
+color:var(--color-text);
+}
+.streak-day.today{
+border-color:var(--color-text);
+opacity:0.8;
+}
+.spark-footer{margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--color-text-secondary);letter-spacing:0.04em}
+.spark-footer i{font-size:11px;animation:sparkPulse 1.5s ease-in-out infinite}
+@keyframes sparkPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.setting-btn,.back-link{
+display:inline-flex;align-items:center;gap:8px;
+padding:8px 16px;background:var(--color-surface);
+border:1px solid var(--color-border);border-radius:var(--radius);
+color:var(--color-text-secondary);font-family:var(--font-main);font-size:12px;font-weight:500;letter-spacing:0.06em;
+text-decoration:none;cursor:pointer;
+transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.setting-btn:hover,.back-link:hover{
+border-color:var(--color-border-hover);background:var(--color-surface-hover);
+color:var(--color-text);transform:translateY(-1px);
+}
+.setting-btn i,.back-link i{font-size:12px}
+.footer{padding:48px 0 32px;border-top:1px solid var(--color-border);text-align:center}
+.footer-content{display:flex;flex-direction:column;align-items:center;gap:12px}
+.footer .copyright{font-size:11px;font-weight:400;letter-spacing:0.1em;color:var(--color-text-muted)}
+.footer-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center}
+.footer-links a{color:var(--color-text-secondary);text-decoration:none;transition:color 0.3s ease;font-size:11px;font-weight:500;letter-spacing:0.1em}
+.footer-links a:hover{color:var(--color-text)}
+@media(max-width:768px){
+.container{padding:36px 20px 24px}
+.header{gap:16px}
+.spark-title{font-size:36px}
+.spark-card{padding:20px 24px;min-width:120px}
+.spark-card .number{font-size:32px}
+.streak-day{width:30px;height:30px;font-size:11px}
+}
+.settings-panel{
+display:none;margin-top:32px;text-align:left;
+background:var(--color-surface);
+border:1px solid var(--color-border);
+border-radius:var(--radius);
+padding:24px;max-width:480px;margin-left:auto;margin-right:auto;
+}
+.settings-panel.open{display:block}
+.settings-panel h3{font-size:14px;font-weight:600;letter-spacing:0.04em;margin-bottom:4px;color:var(--color-text)}
+.settings-panel .hint{font-size:12px;color:var(--color-text-muted);margin-bottom:16px;line-height:1.6}
+.settings-panel label{font-size:12px;color:var(--color-text-secondary);display:block;margin-bottom:6px;letter-spacing:0.04em}
+.settings-panel textarea{
+width:100%;padding:10px 12px;
+background:var(--color-bg);
+border:1px solid var(--color-border);
+border-radius:8px;
+color:var(--color-text);
+font-family:var(--font-main);font-size:12px;line-height:1.5;
+resize:vertical;min-height:70px;outline:none;
+}
+.settings-panel textarea:focus{border-color:var(--color-border-hover)}
+.settings-actions{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn-primary{
+padding:8px 20px;
+background:var(--color-surface);
+border:1px solid var(--color-border);border-radius:8px;
+color:var(--color-text);font-family:var(--font-main);font-size:12px;font-weight:500;letter-spacing:0.06em;
+cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.btn-primary:hover{border-color:var(--color-border-hover);background:var(--color-surface-hover);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.btn-secondary{
+padding:8px 16px;
+background:transparent;
+border:1px solid var(--color-border);border-radius:8px;
+color:var(--color-text-secondary);font-family:var(--font-main);font-size:12px;letter-spacing:0.04em;
+cursor:pointer;transition:all 0.3s ease;
+}
+.btn-secondary:hover{border-color:var(--color-border-hover);color:var(--color-text)}
+.status-msg{margin-top:12px;font-size:12px;line-height:1.5}
+.status-msg.success{color:var(--color-text);opacity:0.7}
+.status-msg.error{color:var(--color-text-secondary);opacity:0.8}
+.status-msg.info{color:var(--color-text-secondary);opacity:0.6}
+.manual-inputs{display:none;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.manual-inputs.open{display:grid}
+.manual-inputs .input-group label{font-size:11px;color:var(--color-text-muted);margin-bottom:4px}
+.manual-inputs .input-group input{
+width:100%;padding:8px 10px;
+background:var(--color-bg);
+border:1px solid var(--color-border);
+border-radius:8px;
+color:var(--color-text);
+font-family:var(--font-main);font-size:14px;font-weight:600;text-align:center;
+outline:none;
+}
+.manual-inputs .input-group input:focus{border-color:var(--color-border-hover)}
+.user-info{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;font-size:13px;color:var(--color-text-secondary)}
+.user-info img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.api-section{margin-top:16px;padding-top:14px;border-top:1px solid var(--color-border);font-size:12px;color:var(--color-text-muted)}
+.api-section summary{cursor:pointer;color:var(--color-text-secondary);font-weight:500;font-size:12px}
+.api-section .step{margin-top:8px;padding:8px 10px;background:var(--color-bg);border-radius:6px;line-height:1.6}
+.api-section .step code{font-size:11px;background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;word-break:break-all}
+@media(max-width:768px){
+.manual-inputs{grid-template-columns:1fr}
+.settings-panel{padding:20px}
+}
+</style>
+</head>
+<body>
+<div class="background-overlay" id="bgOverlay"></div>
+<div class="container">
+<header class="header">
+<a href="index.html" class="logo">
+<img src="favicon.ico" class="logo-icon" alt="彩蛋">
+<h1>李子</h1>
+<span class="logo-sub">给桃子的小惊喜</span>
+</a>
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<button class="setting-btn" id="settingBtn"><i class="fa-solid fa-key"></i> 绑定火花</button>
+<a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> 返回</a>
+</div>
+</header>
+
+<main class="main-content">
+<div class="spark-wrap">
+<div class="spark-title">🔥<br>火花记录</div>
+<p class="spark-sub">你和桃子的火花</p>
+
+<div id="userInfo" class="user-info" style="display:none"></div>
+
+<div class="spark-count-wrap">
+<div class="spark-card">
+<div class="number" id="sparkDays">0</div>
+<div class="label">连续火花</div>
+</div>
+<div class="spark-card">
+<div class="number" id="totalDays">0</div>
+<div class="label">累计互动</div>
+</div>
+</div>
+
+<div class="spark-streak" id="streakDays"></div>
+
+<div class="spark-footer">
+<i class="fa-solid fa-fire"></i> 火花需要每天互动来维持哦 <i class="fa-solid fa-fire"></i>
+</div>
+
+<div class="settings-panel" id="settingsPanel">
+<h3>绑定桃子火花</h3>
+<p class="hint">登录抖音网页版后，将 Cookie 粘贴到下方，自动获取你的账号信息与<strong>桃子</strong>的火花数据。</p>
+
+<label for="cookieInput">Cookie（从抖音网页版复制）</label>
+<textarea id="cookieInput" placeholder="粘贴 Cookie 内容..."></textarea>
+
+<div class="settings-actions">
+<button class="btn-primary" id="fetchBtn"><i class="fa-solid fa-cloud-arrow-down"></i> 获取火花</button>
+<button class="btn-secondary" id="manualToggleBtn">手动输入</button>
+<button class="btn-secondary" id="clearBtn">清除</button>
+</div>
+
+<div id="statusMsg" class="status-msg"></div>
+
+<div class="manual-inputs" id="manualInputs">
+<div class="input-group">
+<label>与桃子的连续火花天数</label>
+<input type="number" id="manualSpark" min="0" value="7">
+</div>
+<div class="input-group">
+<label>与桃子的累计互动天数</label>
+<input type="number" id="manualTotal" min="0" value="23">
+</div>
+<div class="settings-actions" style="margin-top:8px;grid-column:1/-1">
+<button class="btn-primary" id="manualApplyBtn">应用</button>
+</div>
+</div>
+
+<details class="api-section">
+<summary>如何获取 Cookie？</summary>
+<div class="step">
+1. 打开 <code>https://www.douyin.com</code> 并登录<br>
+2. 按 <code>F12</code> → <code>Application</code> → <code>Cookies</code> → <code>www.douyin.com</code><br>
+3. 找到 <code>sessionid</code> 复制其值（或直接复制全部 Cookie）<br>
+4. 粘贴到上方，点击「获取火花」自动拉取与桃子的火花数据
+</div>
+</details>
+</div>
+</div>
+</main>
+
+<footer class="footer">
+<div class="footer-content">
+<p class="copyright">特别制作这个小彩蛋</p>
+<div class="footer-links">
+<a href="index.html"><i class="fa-solid fa-house"></i> 返回彩蛋</a>
+</div>
+</div>
+</footer>
+</div>
+
+<script>
+(function(){
+const LS_KEY = 'spark_data';
+let state = { sparkDays: 7, totalDays: 23, cookie: '', myInfo: null, taoziNickname: '桃子' };
+
+const els = {
+  bg: document.getElementById('bgOverlay'),
+  sparkDays: document.getElementById('sparkDays'),
+  totalDays: document.getElementById('totalDays'),
+  streak: document.getElementById('streakDays'),
+  userInfo: document.getElementById('userInfo'),
+  settingBtn: document.getElementById('settingBtn'),
+  settingsPanel: document.getElementById('settingsPanel'),
+  cookieInput: document.getElementById('cookieInput'),
+  fetchBtn: document.getElementById('fetchBtn'),
+  clearBtn: document.getElementById('clearBtn'),
+  manualToggle: document.getElementById('manualToggleBtn'),
+  manualInputs: document.getElementById('manualInputs'),
+  manualSpark: document.getElementById('manualSpark'),
+  manualTotal: document.getElementById('manualTotal'),
+  manualApply: document.getElementById('manualApplyBtn'),
+  statusMsg: document.getElementById('statusMsg')
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(LS_KEY);
+    if (saved) {
+      const p = JSON.parse(saved);
+      state.sparkDays = p.sparkDays ?? 7;
+      state.totalDays = p.totalDays ?? 23;
+      state.cookie = p.cookie ?? '';
+      state.myInfo = p.myInfo ?? null;
+      state.taoziNickname = p.taoziNickname ?? '桃子';
+      els.cookieInput.value = state.cookie;
+    }
+  } catch (e) {}
+}
+function saveState() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+}
+function setStatus(msg, type) {
+  els.statusMsg.className = 'status-msg ' + type;
+  els.statusMsg.textContent = msg;
+}
+
+function animateNumber(el, target) {
+  const start = performance.now();
+  const initial = parseInt(el.textContent) || 0;
+  const duration = 800;
+  function update(now) {
+    const p = Math.min((now - start) / duration, 1);
+    el.textContent = Math.floor(initial + (target - initial) * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function buildStreak() {
+  const today = new Date();
+  const dn = ['日','一','二','三','四','五','六'];
+  els.streak.innerHTML = '';
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const el = document.createElement('div');
+    el.className = 'streak-day';
+    if (i === 0) el.classList.add('today');
+    if (i < state.sparkDays) el.classList.add('active');
+    el.textContent = d.getDate();
+    el.title = `${d.getMonth()+1}月${d.getDate()}日 周${dn[d.getDay()]}`;
+    els.streak.appendChild(el);
+  }
+}
+
+function render() {
+  animateNumber(els.sparkDays, state.sparkDays);
+  setTimeout(() => animateNumber(els.totalDays, state.totalDays), 200);
+  buildStreak();
+  if (state.myInfo) {
+    els.userInfo.style.display = 'flex';
+    els.userInfo.innerHTML = state.myInfo.avatar
+      ? `<img src="${state.myInfo.avatar}"> <span>${state.myInfo.nickname}</span> <span style="color:var(--color-text-muted);font-size:11px">→</span> <span>${state.taoziNickname}</span>`
+      : `<span>${state.myInfo.nickname}</span> <span style="color:var(--color-text-muted);font-size:11px">→</span> <span>${state.taoziNickname}</span>`;
+  } else {
+    els.userInfo.style.display = 'none';
+  }
+}
+
+async function fetchFromDouyin(cookie) {
+  let sid = cookie;
+  const m = cookie.match(/sessionid=([^;]+)/);
+  if (m) sid = m[1];
+  const proxy = 'https://api.allorigins.win/raw?url=';
+  const headers = {
+    'Cookie': `sessionid=${sid}`,
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+  };
+  const apis = {
+    self: 'https://www.douyin.com/aweme/v1/web/user/profile/self/',
+    friends: 'https://www.douyin.com/aweme/v1/web/im/friend/list/?count=50'
+  };
+  let myInfo = null;
+  for (const url of [proxy + encodeURIComponent(apis.self), apis.self]) {
+    try {
+      const res = await fetch(url, { headers, signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        const u = data?.data?.user_info || data?.user_info || data?.data;
+        if (u?.nickname) {
+          myInfo = {
+            nickname: u.nickname,
+            avatar: u.avatar_thumb?.url_list?.[0] || u.avatar_larger?.url_list?.[0] || ''
+          };
+        }
+        break;
+      }
+    } catch (e) {}
+  }
+  for (const url of [proxy + encodeURIComponent(apis.friends), apis.friends]) {
+    try {
+      const res = await fetch(url, { headers, signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        const friends = data?.data?.friend_list || data?.friend_list || [];
+        const taozi = friends.find(f =>
+          f.nickname?.includes('桃') || f.nickname?.toLowerCase().includes('tao')
+        );
+        if (taozi) {
+          return {
+            myInfo: myInfo || { nickname: '李子', avatar: '' },
+            taoziNickname: taozi.nickname,
+            sparkDays: taozi.spark_days || taozi.fire_days || taozi.interact_days || 0,
+            totalDays: taozi.total_interact_days || taozi.total_days || 0
+          };
+        }
+        throw new Error('未找到桃子好友');
+      }
+    } catch (e) {}
+  }
+  if (myInfo) {
+    return { myInfo, taoziNickname: '桃子', sparkDays: 0, totalDays: 0 };
+  }
+  throw new Error('请求失败');
+}
+
+const img = new Image();
+img.src = 'main.jpg';
+img.onload = () => { gsap.to(els.bg, { opacity: 1, duration: 1.2, ease: 'power2.out' }); els.bg.classList.add('loaded'); };
+img.onerror = () => { els.bg.classList.add('loaded'); };
+
+gsap.fromTo('.header', { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+gsap.fromTo('.spark-title', { opacity: 0, y: 40, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.7)', delay: 0.3 });
+gsap.fromTo('.spark-sub', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.8 });
+gsap.fromTo('.spark-count-wrap', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 1.0 });
+gsap.fromTo('.spark-streak', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 1.1 });
+gsap.fromTo('.spark-footer', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 1.2 });
+gsap.fromTo('.footer', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out', delay: 1.3 });
+
+els.settingBtn.addEventListener('click', () => { els.settingsPanel.classList.toggle('open'); });
+
+els.fetchBtn.addEventListener('click', async () => {
+  const cookie = els.cookieInput.value.trim();
+  if (!cookie) { setStatus('请先粘贴 Cookie', 'error'); return; }
+  els.fetchBtn.disabled = true;
+  els.fetchBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 获取中...';
+  setStatus('正在获取与桃子的火花数据...', 'info');
+  state.cookie = cookie;
+  saveState();
+  try {
+    const result = await fetchFromDouyin(cookie);
+    state.sparkDays = result.sparkDays;
+    state.totalDays = result.totalDays;
+    state.myInfo = result.myInfo;
+    state.taoziNickname = result.taoziNickname;
+    saveState();
+    render();
+    setStatus(`成功获取 ${result.myInfo.nickname} → ${result.taoziNickname} 的火花数据！`, 'success');
+  } catch (e) {
+    setStatus('API 获取失败（跨域限制），请手动输入火花数据', 'error');
+    els.manualInputs.classList.add('open');
+  } finally {
+    els.fetchBtn.disabled = false;
+    els.fetchBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> 获取火花';
+  }
+});
+
+els.clearBtn.addEventListener('click', () => {
+  els.cookieInput.value = '';
+  state.cookie = '';
+  state.myInfo = null;
+  saveState();
+  setStatus('已清除', 'info');
+  els.userInfo.style.display = 'none';
+});
+
+els.manualToggle.addEventListener('click', () => {
+  els.manualInputs.classList.toggle('open');
+  els.manualSpark.value = state.sparkDays;
+  els.manualTotal.value = state.totalDays;
+});
+
+els.manualApply.addEventListener('click', () => {
+  const s = parseInt(els.manualSpark.value);
+  const t = parseInt(els.manualTotal.value);
+  if (isNaN(s) || isNaN(t) || s < 0 || t < 0) { setStatus('请输入有效的数字', 'error'); return; }
+  state.sparkDays = s;
+  state.totalDays = t;
+  saveState();
+  render();
+  setStatus('数据已更新！', 'success');
+  els.manualInputs.classList.remove('open');
+});
+
+loadState();
+render();
+if (state.cookie) setTimeout(() => setStatus('已保存 Cookie，点击「获取火花」拉取数据', 'info'), 500);
+})();
+</script>
+</body>
+</html>
